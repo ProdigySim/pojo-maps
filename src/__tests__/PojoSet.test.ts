@@ -147,6 +147,9 @@ describe('PojoSet', () => {
     leibnizTest<typeof s, PojoSet<'a' | 'b'>>(identity);
     const ss = PojoSet.empty<number>();
     leibnizTest<typeof ss, PojoSet<number>>(identity);
+
+    const defaultEmptySet = PojoSet.empty();
+    leibnizTest<typeof defaultEmptySet, PojoSet<never>>(identity);
   });
 
   it('should do a set union', () => {

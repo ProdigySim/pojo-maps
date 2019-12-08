@@ -2,7 +2,8 @@
   "name": "pojo-sets",
   "version": "0.0.1",
   "description": "Plain old Javascript Set implementation",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.23",
@@ -20,14 +21,18 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "eslint . --ext .ts",
-    "preversion": "npm run lint"
+    "preversion": "npm run lint",
+    "prepare": "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ProdigySim/pojo-sets.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["typescript", "set"],
+  "author": "ProdigySim",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ProdigySim/pojo-sets/issues"

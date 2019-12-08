@@ -88,7 +88,7 @@ function remove<T extends PropertyKey>(set: PojoSet<T>, value: T): PojoSet<T> {
  *
  * @returns A new, empty PojoSet
  */
-function empty<T extends PropertyKey>(): PojoSet<T> {
+function empty<T extends PropertyKey = never>(): PojoSet<T> {
   return {};
 }
 
