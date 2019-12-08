@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "lib": ["ES2015"],
     "declaration": true,
+    "removeComments": false,
     "outDir": "./lib",
     "strict": true
   },

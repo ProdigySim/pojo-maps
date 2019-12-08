@@ -1,27 +1,39 @@
 /**
  * Plain-old-javascript-object Set Implementaiton.
  *
- * Items in the set will have a value of `true`.
+ * Values in the set will have a value of `true`.
  */
 export type PojoSet<T extends PropertyKey> = {
   readonly [idx in T]?: true;
 };
 
 /**
- * Createa a PojoSet from a list of items.
- * @param items items to populate the set with
+ * Create a a PojoSet from an array of values.
+ * @param values values to populate the set with
+ * @returns a PojoSet containing the values
  */
-function from<T extends PropertyKey>(items: T[]): PojoSet<T> {
-  return items.reduce((acc, next) => {
+function from<T extends PropertyKey>(values: T[]): PojoSet<T> {
+  return values.reduce((acc, next) => {
     acc[next] = true;
     return acc;
   }, {} as Record<T, true>);
 }
 
+/**
+ * Convert a PojoSet to an array of values.
+ * @param set A PojoSet
+ * @returns an array containing all the values in the set.
+ */
 function toArray<T extends PropertyKey>(set: PojoSet<T>): T[] {
   return Object.keys(set) as T[];
 }
 
+/**
+ * Create a PojoSet from the values of a Typescript Enum.
+ *
+ * @param enumObj A typescript `enum` object
+ * @returns A PojoSet of the enum values
+ */
 function fromEnum<T extends Record<string | number, PropertyKey>>(enumObj: T): PojoSet<T[keyof T]> {
   return from(
     Object.keys(enumObj)
@@ -32,27 +44,61 @@ function fromEnum<T extends Record<string | number, PropertyKey>>(enumObj: T): P
   );
 }
 
-function has<T extends PropertyKey>(set: PojoSet<T>, item: T): boolean {
-  return !!set[item];
+/**
+ * Check if an value is in a PojoSet.
+ *
+ * @param set A PojoSet
+ * @param value The value to check existence of
+ * @returns true if the value exists in the set, false otherwise.
+ */
+function has<T extends PropertyKey>(set: PojoSet<T>, value: T): boolean {
+  return !!set[value];
 }
 
-function add<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, item: U): PojoSet<T | U> {
+/**
+ * Add an item to a PojoSet, immutably.
+ *
+ * @param set An existing PojoSet
+ * @param value The value to add
+ * @returns A new PojoSet contianing the original set and the given value.
+ */
+function add<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, value: U): PojoSet<T | U> {
   return {
     ...set,
-    [item]: true,
+    [value]: true,
   } as PojoSet<T | U>;
 }
 
-function remove<T extends PropertyKey>(set: PojoSet<T>, item: T): PojoSet<T> {
+/**
+ * Remove an item from a PojoSet, immutably.
+ *
+ * @param set An existing PojoSet
+ * @param value The value to remove
+ * @returns A new PojoSet contianing the original set minus the given value.
+ */
+function remove<T extends PropertyKey>(set: PojoSet<T>, value: T): PojoSet<T> {
+  // Extracting the the value from the PojoSet object via destructuring
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { [item]: removed, ...remaining } = set;
+  const { [value]: removed, ...remaining } = set;
   return remaining as PojoSet<T>;
 }
 
+/**
+ * Create an empty PojoSet of the given type.
+ *
+ * @returns A new, empty PojoSet
+ */
 function empty<T extends PropertyKey>(): PojoSet<T> {
   return {};
 }
 
+/**
+ * Create a PojoSet from the union of two PojoSets.
+ *
+ * @param a A PojoSet
+ * @param b A PojoSet
+ * @returns A new PojoSet containing the values from both input sets.
+ */
 function union<T extends PropertyKey, U extends PropertyKey>(a: PojoSet<T>, b: PojoSet<U>): PojoSet<T | U> {
   return {
     ...a,
@@ -60,6 +106,13 @@ function union<T extends PropertyKey, U extends PropertyKey>(a: PojoSet<T>, b: P
   };
 }
 
+/**
+ * Create a PojoSet from the set difference of two PojoSets
+ *
+ * @param a A PojoSet
+ * @param b A PojoSet
+ * @returns A new PojoSet containing the values from the first set, minus the values shared by both sets.
+ */
 function difference<T extends PropertyKey, U extends PropertyKey>(a: PojoSet<T>, b: PojoSet<T | U>): PojoSet<T> {
   return from(
     // Remove all items in A that exist in B
@@ -67,6 +120,13 @@ function difference<T extends PropertyKey, U extends PropertyKey>(a: PojoSet<T>,
   );
 }
 
+/**
+ * Create a PojoSet from the set intersection of two PojoSets
+ *
+ * @param a A PojoSet
+ * @param b A PojoSet
+ * @returns A new PojoSet containing only the values that exist in both input sets.
+ */
 function intersection<T extends PropertyKey, U extends PropertyKey>(a: PojoSet<T>, b: PojoSet<U>): PojoSet<T & U> {
   return from(
     // Only keep items that exist in both A and B
