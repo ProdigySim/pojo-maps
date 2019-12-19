@@ -72,6 +72,18 @@ describe('PojoSet', () => {
     expect(PojoSet.toArray(PojoSet.from(['a', 'b', 'c']))).toEqual(['a', 'b', 'c']);
   });
 
+  it('should serialize a set with items manually removed', () => {
+    const s = PojoSet.from(['a', 'b', 'c']);
+    const ss = {
+      ...s,
+      c: false,
+    } as unknown as PojoSet<'a' | 'b' |'c'>;
+
+    const out = PojoSet.toArray(ss);
+    leibnizTest<typeof out, Array<'a' | 'b' |'c'>>(identity);
+    expect(out).toEqual(['a', 'b']);
+  });
+
   it('should make a set from a string enum', () => {
     const res = PojoSet.fromEnum(MyStringEnum);
     leibnizTest<typeof res, PojoSet<MyStringEnum>>(identity);

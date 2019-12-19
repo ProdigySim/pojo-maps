@@ -20,6 +20,17 @@ function from<T extends PropertyKey>(values: T[]): PojoSet<T> {
 }
 
 /**
+ * Check if an value is in a PojoSet.
+ *
+ * @param set A PojoSet
+ * @param value The value to check existence of
+ * @returns true if the value exists in the set, false otherwise.
+ */
+function has<T extends PropertyKey>(set: PojoSet<T>, value: T): boolean {
+  return !!set[value];
+}
+
+/**
  * Convert a PojoSet to an array of values.
  * @param set A PojoSet
  * @returns an array containing all the values in the set.
@@ -45,17 +56,6 @@ function fromEnum<T extends Record<string | number, PropertyKey>>(enumObj: T): P
       .filter(k => isNaN(parseInt(k, 10)))
       .map(k => enumObj[k]),
   );
-}
-
-/**
- * Check if an value is in a PojoSet.
- *
- * @param set A PojoSet
- * @param value The value to check existence of
- * @returns true if the value exists in the set, false otherwise.
- */
-function has<T extends PropertyKey>(set: PojoSet<T>, value: T): boolean {
-  return !!set[value];
 }
 
 /**
