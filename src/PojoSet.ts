@@ -25,7 +25,10 @@ function from<T extends PropertyKey>(values: T[]): PojoSet<T> {
  * @returns an array containing all the values in the set.
  */
 function toArray<T extends PropertyKey>(set: PojoSet<T>): T[] {
-  return Object.keys(set) as T[];
+  const keys = Object.keys(set) as T[];
+
+  // For maximum compatibility, filter on the values, in case the user has set some fields to false manually.
+  return keys.filter((k) => has(set, k));
 }
 
 /**
@@ -171,6 +174,7 @@ export const PojoSet = {
   add,
   remove,
   toggle,
+  has,
   from,
   toArray,
   fromEnum,
