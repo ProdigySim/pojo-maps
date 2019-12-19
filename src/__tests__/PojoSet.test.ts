@@ -74,13 +74,13 @@ describe('PojoSet', () => {
 
   it('should serialize a set with items manually removed', () => {
     const s = PojoSet.from(['a', 'b', 'c']);
-    const ss = {
+    const ss = ({
       ...s,
       c: false,
-    } as unknown as PojoSet<'a' | 'b' |'c'>;
+    } as unknown) as PojoSet<'a' | 'b' | 'c'>;
 
     const out = PojoSet.toArray(ss);
-    leibnizTest<typeof out, Array<'a' | 'b' |'c'>>(identity);
+    leibnizTest<typeof out, Array<'a' | 'b' | 'c'>>(identity);
     expect(out).toEqual(['a', 'b']);
   });
 

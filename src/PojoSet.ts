@@ -39,7 +39,7 @@ function toArray<T extends PropertyKey>(set: PojoSet<T>): T[] {
   const keys = Object.keys(set) as T[];
 
   // For maximum compatibility, filter on the values, in case the user has set some fields to false manually.
-  return keys.filter((k) => has(set, k));
+  return keys.filter(k => has(set, k));
 }
 
 /**
