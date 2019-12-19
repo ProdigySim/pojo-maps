@@ -93,14 +93,26 @@ function remove<T extends PropertyKey>(set: PojoSet<T>, value: T): PojoSet<T> {
  */
 
 function toggle<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, value: U, enable: true): PojoSet<T | U>;
-function toggle<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, value: U, enable: false): U extends T ? PojoSet<T> : never;
-function toggle<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, value: U, enable: boolean): PojoSet<T> | PojoSet<T | U>;
-function toggle<T extends PropertyKey, U extends PropertyKey>(set: PojoSet<T>, value: U, enable: boolean): PojoSet<T> | PojoSet<T | U> {
-  if(enable) {
+function toggle<T extends PropertyKey, U extends PropertyKey>(
+  set: PojoSet<T>,
+  value: U,
+  enable: false,
+): U extends T ? PojoSet<T> : never;
+function toggle<T extends PropertyKey, U extends PropertyKey>(
+  set: PojoSet<T>,
+  value: U,
+  enable: boolean,
+): PojoSet<T> | PojoSet<T | U>;
+function toggle<T extends PropertyKey, U extends PropertyKey>(
+  set: PojoSet<T>,
+  value: U,
+  enable: boolean,
+): PojoSet<T> | PojoSet<T | U> {
+  if (enable) {
     return add(set, value);
   } else {
     // If `U` is not part of `T` this should technically be a No-Op.
-    return remove(set, value as unknown as T);
+    return remove(set, (value as unknown) as T);
   }
 }
 

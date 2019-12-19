@@ -174,13 +174,13 @@ describe('PojoSet', () => {
 
   it('should produce good types when toggling via boolean', () => {
     const s = PojoSet.from(['a', 'b', 'c']);
-    const ss = PojoSet.toggle(s, 'c', false as unknown as boolean);
+    const ss = PojoSet.toggle(s, 'c', (false as unknown) as boolean);
     leibnizTest<typeof ss, PojoSet<'a' | 'b' | 'c'>>(identity);
 
-    const sss = PojoSet.toggle(s, 'd', false as unknown as boolean);
+    const sss = PojoSet.toggle(s, 'd', (false as unknown) as boolean);
     leibnizTest<typeof sss, PojoSet<'a' | 'b' | 'c'> | PojoSet<'a' | 'b' | 'c' | 'd'>>(identity);
 
-    const ssss = PojoSet.toggle(s, 'd', true as unknown as boolean);
+    const ssss = PojoSet.toggle(s, 'd', (true as unknown) as boolean);
     leibnizTest<typeof ssss, PojoSet<'a' | 'b' | 'c'> | PojoSet<'a' | 'b' | 'c' | 'd'>>(identity);
   });
 
