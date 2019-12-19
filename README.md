@@ -1,6 +1,6 @@
 # POJO Sets
 
-In using React and Redux, you may find that you have to deal with POJO objects over ES6+ native objects, like `Set` and `Map`. This project aims to provide a well typed, immutable POJO Set implementation that can simplify tasks you often do with POJO sets.
+In using React and Redux, you may find that you have to use POJO objects instead of ES6+ native objects like `Set` and `Map`. This project aims to provide a well typed, immutable POJO Set implementation that can simplify tasks you often do with POJO sets.
 
 ## Quick start
 
