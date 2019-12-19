@@ -127,6 +127,22 @@ describe('PojoSet', () => {
       c: true,
     });
   });
+  it('should add to a set immutably via toggle', () => {
+    const s = PojoSet.from(['a', 'b', 'c']);
+    const ss = PojoSet.toggle(s, 'd', true);
+    leibnizTest<typeof ss, PojoSet<'a' | 'b' | 'c' | 'd'>>(identity);
+    expect(ss).toEqual({
+      a: true,
+      b: true,
+      c: true,
+      d: true,
+    });
+    expect(s).toEqual({
+      a: true,
+      b: true,
+      c: true,
+    });
+  });
 
   it('should remove from a set immutably', () => {
     const s = PojoSet.from(['a', 'b', 'c']);
@@ -140,6 +156,32 @@ describe('PojoSet', () => {
       b: true,
       c: true,
     });
+  });
+
+  it('should remove from a set immutably via toggle', () => {
+    const s = PojoSet.from(['a', 'b', 'c']);
+    const ss = PojoSet.toggle(s, 'c', false);
+    expect(ss).toEqual({
+      a: true,
+      b: true,
+    });
+    expect(s).toEqual({
+      a: true,
+      b: true,
+      c: true,
+    });
+  });
+
+  it('should produce good types when toggling via boolean', () => {
+    const s = PojoSet.from(['a', 'b', 'c']);
+    const ss = PojoSet.toggle(s, 'c', false as unknown as boolean);
+    leibnizTest<typeof ss, PojoSet<'a' | 'b' | 'c'>>(identity);
+
+    const sss = PojoSet.toggle(s, 'd', false as unknown as boolean);
+    leibnizTest<typeof sss, PojoSet<'a' | 'b' | 'c'> | PojoSet<'a' | 'b' | 'c' | 'd'>>(identity);
+
+    const ssss = PojoSet.toggle(s, 'd', true as unknown as boolean);
+    leibnizTest<typeof ssss, PojoSet<'a' | 'b' | 'c'> | PojoSet<'a' | 'b' | 'c' | 'd'>>(identity);
   });
 
   it('should create an empty set', () => {
