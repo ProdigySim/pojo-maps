@@ -1,7 +1,7 @@
 {
-  "name": "pojo-sets",
-  "version": "0.0.3",
-  "description": "Plain old Javascript Set implementation",
+  "name": "pojo-maps",
+  "version": "0.0.1",
+  "description": "Plain old Javascript Map implementation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {},
