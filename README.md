@@ -1,6 +1,8 @@
-# POJO Sets
+# POJO Maps
 
-In using React and Redux, you may find that you have to use POJO objects instead of ES6+ native objects like `Set` and `Map`. This project aims to provide a well typed, immutable POJO Set implementation that can simplify tasks you often do with POJO sets.
+In using React and Redux, you may find that you have to use POJO objects instead of ES6+ native objects like `Set` and `Map`. This project aims to provide a well typed, immutable POJO Map implementation that can simplify tasks you often do with POJO Maps.
+
+See also [`pojo-sets`](https://www.github.com/ProdigySim/pojo-sets)
 
 ![CICD Badge](https://travis-ci.com/ProdigySim/pojo-sets.svg?branch=master)
 
