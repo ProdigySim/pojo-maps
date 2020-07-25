@@ -1,3 +1,3 @@
-import { PojoSet } from './PojoSet';
+import { PojoMap } from './PojoMap';
 
-export { PojoSet };
+export { PojoMap };
