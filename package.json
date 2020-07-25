@@ -17,16 +17,16 @@
     "typescript": "^3.7.3"
   },
   "scripts": {
-    "check": "npm run build && npm run lint && npm run ts-tests && npm test",
+    "check": "yarn run build && yarn run lint && yarn run ts-tests && yarn test",
     "ts-tests": "tsc --build src/__tests__/tsconfig.json",
     "test": "jest --config jestconfig.json",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "eslint . --ext .ts",
-    "preversion": "npm run lint",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run ts-tests && npm test && npm run lint",
-    "version": "npm run format && git add -A src",
+    "preversion": "yarn run lint",
+    "prepare": "yarn run build",
+    "prepublishOnly": "yarn run ts-tests && yarn test && yarn run lint",
+    "version": "yarn run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
   "repository": {
