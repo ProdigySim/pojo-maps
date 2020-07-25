@@ -2,6 +2,8 @@
 
 In using React and Redux, you may find that you have to use POJO objects instead of ES6+ native objects like `Set` and `Map`. This project aims to provide a well typed, immutable POJO Set implementation that can simplify tasks you often do with POJO sets.
 
+![CICD Badge](https://travis-ci.com/ProdigySim/pojo-sets.svg?branch=master)
+
 ## Quick start
 
 Install the package
