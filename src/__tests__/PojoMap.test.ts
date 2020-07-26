@@ -12,7 +12,7 @@ function leibnizTest<T1, T2>(id: Leibniz<T1, T2>): void {
 
 describe('PojoMap', () => {
   it('should make an empty Map', () => {
-    expect(PojoMap.empty<string, number>()).toEqual({});
+    expect(PojoMap.empty<string, number>()).toStrictEqual({});
   });
 
   it('should get a value via its key', () => {
@@ -22,9 +22,9 @@ describe('PojoMap', () => {
       ['orange', true],
     ]);
 
-    expect(PojoMap.has(map, 'a')).toEqual(true);
-    expect(PojoMap.has(map, 2)).toEqual(true);
-    expect(PojoMap.has(map, 'orange')).toEqual(true);
+    expect(PojoMap.has(map, 'a')).toBe(true);
+    expect(PojoMap.has(map, 2)).toBe(true);
+    expect(PojoMap.has(map, 'orange')).toBe(true);
   });
 
   it('should return has() == true even when values are falsy', () => {
@@ -33,9 +33,9 @@ describe('PojoMap', () => {
       ['b', false],
       ['c', ''],
     ]);
-    expect(PojoMap.has(map, 'a')).toEqual(true);
-    expect(PojoMap.has(map, 'b')).toEqual(true);
-    expect(PojoMap.has(map, 'c')).toEqual(true);
+    expect(PojoMap.has(map, 'a')).toBe(true);
+    expect(PojoMap.has(map, 'b')).toBe(true);
+    expect(PojoMap.has(map, 'c')).toBe(true);
     });
 
     it('should add to a PojoMap immutably', () => {
@@ -45,7 +45,7 @@ describe('PojoMap', () => {
         ['c', 2],
       ]);
       const largerMap = PojoMap.set(map, 'd', 3);
-      expect(largerMap).toEqual({
+      expect(largerMap).toStrictEqual({
         a: 0,
         b: 1,
         c: 2,
@@ -59,7 +59,7 @@ describe('PojoMap', () => {
         ['b', 1],
       ]);
       const smallerMap = PojoMap.set(map, 'b', 5);
-      expect(smallerMap).toEqual({
+      expect(smallerMap).toStrictEqual({
         a: 0,
         b: 5,
       });
@@ -71,10 +71,10 @@ describe('PojoMap', () => {
         ['b', 1],
       ]);
       const smallerMap = PojoMap.remove(map, 'b');
-      expect(smallerMap).toEqual({
+      expect(smallerMap).toStrictEqual({
         a: 0,
       });
-      expect(PojoMap.has(smallerMap, 'b')).toEqual(false);
+      expect(PojoMap.has(smallerMap, 'b')).toStrictEqual(false);
     });
 
     it('should do nothing when removing a key that doesn\'t exist', () => {
@@ -83,12 +83,12 @@ describe('PojoMap', () => {
         ['b', 1],
       ]);
       const newMap = PojoMap.remove(map, 'c');
-      expect(newMap).toEqual({
+      expect(newMap).toStrictEqual({
         a: 0,
         b: 1,
       });
-      expect (newMap).toEqual(map);
-      expect (newMap).not.toStrictEqual(map);
-      expect(PojoMap.has(newMap, 'c')).toEqual(false);
+      expect (newMap).toStrictEqual(map);
+      expect(Object.is(newMap, map)).toBe(false);
+      expect(PojoMap.has(newMap, 'c')).toBe(false);
     });    
 });
