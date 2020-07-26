@@ -53,6 +53,18 @@ describe('PojoMap', () => {
       });
     });
 
+    it('should overwrite an existing value with the same key', () => {
+      const map = PojoMap.fromEntries<string, number>([
+        ['a', 0],
+        ['b', 1],
+      ]);
+      const smallerMap = PojoMap.set(map, 'b', 5);
+      expect(smallerMap).toEqual({
+        a: 0,
+        b: 5,
+      });
+    }); 
+
     it('should remove from a PojoMap immutably', () => {
       const map = PojoMap.fromEntries<string, number>([
         ['a', 0],
@@ -64,4 +76,19 @@ describe('PojoMap', () => {
       });
       expect(PojoMap.has(smallerMap, 'b')).toEqual(false);
     });
+
+    it('should do nothing when removing a key that doesn\'t exist', () => {
+      const map = PojoMap.fromEntries<string, number>([
+        ['a', 0],
+        ['b', 1],
+      ]);
+      const newMap = PojoMap.remove(map, 'c');
+      expect(newMap).toEqual({
+        a: 0,
+        b: 1,
+      });
+      expect (newMap).toEqual(map);
+      expect (newMap).not.toStrictEqual(map);
+      expect(PojoMap.has(newMap, 'c')).toEqual(false);
+    });    
 });
