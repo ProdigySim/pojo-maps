@@ -163,4 +163,12 @@ describe('PojoMap', () => {
       ['c', 3],
     ]);
   });
+
+  it("should return the correct size of a PojoMap", () => {
+    const map = PojoMap.fromEntries<string, number>([
+      ['a', 0],
+      ['b', 1],
+    ]);
+    expect(PojoMap.size(map)).toStrictEqual(2);
+  });
 });

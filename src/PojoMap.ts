@@ -100,6 +100,16 @@ function entries<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): [T, U
   return keys(map).map(k => [k, map[k] as U]);
 }
 
+/**
+ * Get a PojoMap's size (i.e. number of contained values)
+ *
+ * @param map A PojoMap
+ * @returns the number of values contained in a PojoMap
+ */
+function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
+  return keys(map).length;
+}
+
 export const PojoMap = {
   fromEntries,
   has,
@@ -109,4 +119,5 @@ export const PojoMap = {
   keys,
   values,
   entries,
+  size,
 };
