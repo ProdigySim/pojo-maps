@@ -61,6 +61,31 @@ describe('PojoMap', () => {
     expect(PojoMap.has(map, 'c')).toBe(true);
   });
 
+  it('should get the value at a key', () => {
+    const map = PojoMap.fromEntries([
+      ['a', 1],
+      ['b', 0],
+      ['c', -1],
+    ]);
+
+    expect(PojoMap.get(map, 'a')).toBe(1);
+    expect(PojoMap.get(map, 'b')).toBe(0);
+    expect(PojoMap.get(map, 'c')).toBe(-1);
+    // $ExpectError
+    //expect(PojoMap.get(map, 'd')).toBeUndefined();
+
+    const res = PojoMap.get(map, 'a');
+    leibnizTest<typeof res, number | undefined>(identity);
+  });
+
+  it('should return undefined when key is not found', () => {
+    const map = PojoMap.fromEntries<string, number>([['a', 1]]);
+    expect(PojoMap.get(map, 'd')).toBeUndefined();
+
+    const res = PojoMap.get(map, 'd');
+    leibnizTest<typeof res, number | undefined>(identity);
+  });
+
   it('should add to a PojoMap immutably', () => {
     const map = PojoMap.fromEntries<string, number>([
       ['a', 0],
