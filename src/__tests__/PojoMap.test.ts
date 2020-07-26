@@ -15,7 +15,7 @@ describe('PojoMap', () => {
     expect(PojoMap.empty<string, number>()).toStrictEqual({});
   });
 
-  it('should get a value via its key', () => {
+  it('should check whether it is defined at a key', () => {
     const map = PojoMap.fromEntries<string | number | symbol, number | boolean | string>([
       ['a', 5],
       [2, 'blue'],

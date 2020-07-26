@@ -7,6 +7,10 @@ export type PojoMap<T extends PropertyKey, U extends {}> = {
   readonly [idx in T]?: U;
 };
 
+/**
+ * Create a PojoMap from a set of key-value pairs.
+ * @param entries Key value pairs for creating the map.
+ */
 function fromEntries<T extends PropertyKey, U extends {}>(
   entries: Readonly<Array<readonly [T, U]>>,
 ): PojoMap<T, U> {
@@ -18,11 +22,11 @@ function fromEntries<T extends PropertyKey, U extends {}>(
 }
 
 /**
- * Check if an value is in a PojoMap.
+ * Check if a key is in a PojoMap.
  *
  * @param map A PojoMap
- * @param value The value to check existence of
- * @returns true if the value exists in the set, false otherwise.
+ * @param key The key to check existence of
+ * @returns true if the key exists in the PojoMap, false otherwise.
  */
 function has<T extends PropertyKey, U extends {}>(map: PojoMap<T,U>, key: T): boolean {
   return typeof map[key] !== 'undefined'
@@ -31,15 +35,14 @@ function has<T extends PropertyKey, U extends {}>(map: PojoMap<T,U>, key: T): bo
 /**
  * Add an entry to a PojoMap, immutably.
  *
- * @param inputMap An existing PojoMap
- * @param outputMap The new PojoMap
+ * @param map An existing PojoMap
  * @param key The entry's key
  * @param value The entry's value
  * @returns A new PojoMap contianing the original PojoMap and the new entry.
  */
-function set<T extends PropertyKey, U extends {}>(inputMap: PojoMap<T,U>, key: T, value: U): PojoMap<T,U> {
+function set<T extends PropertyKey, U extends {}>(map: PojoMap<T,U>, key: T, value: U): PojoMap<T,U> {
   return {
-    ...inputMap,
+    ...map,
     [key]: value,
    };
 }
@@ -48,11 +51,11 @@ function set<T extends PropertyKey, U extends {}>(inputMap: PojoMap<T,U>, key: T
  * Remove an item from a PojoMap, immutably.
  *
  * @param map An existing PojoMap
- * @param value The value to remove
- * @returns A new PojoMap contianing the original map minus the given value.
+ * @param key The key to remove
+ * @returns A new PojoMap contianing the original map minus the given key.
  */
 function remove<T extends PropertyKey, U extends {}>(map: PojoMap<T,U>, key: T): PojoMap<T,U> {
-  // Extracting the the value from the PojoMap object via destructuring
+  // Extracting the the key from the PojoMap object via destructuring
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [key]: removed, ...remaining } = map;
   return remaining as PojoMap<T,U>;
