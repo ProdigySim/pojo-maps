@@ -20,6 +20,17 @@ function fromEntries<T extends PropertyKey, U extends {}>(entries: Readonly<Arra
 }
 
 /**
+ * Get the value stored at a given key in a PojoMap.
+ *
+ * @param map A PojoMap
+ * @param key The key to retrieve the value at
+ * @returns The value at the key, or undefined.
+ */
+function get<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>, key: T): U | undefined {
+  return map[key];
+}
+
+/**
  * Check if a key is in a PojoMap.
  *
  * @param map A PojoMap
@@ -112,6 +123,7 @@ function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
 
 export const PojoMap = {
   fromEntries,
+  get,
   has,
   set,
   remove,
