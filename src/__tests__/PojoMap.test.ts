@@ -29,13 +29,12 @@ describe('PojoMap', () => {
     });
   });
 
-
   it('should make a Map from entries with precise types', () => {
     const map = PojoMap.fromEntries([
       ['a', 1],
       ['b', 2],
       ['c', 3],
-    ] as const)
+    ] as const);
     leibnizTest<typeof map, PojoMap<'a' | 'b' | 'c', 1 | 2 | 3>>(identity);
   });
 
@@ -123,7 +122,6 @@ describe('PojoMap', () => {
   //   //PojoMap.set(map, 'myvalue', undefined);
   // })
 
-  
   it('should return the keys for a PojoMap', () => {
     expect(
       PojoMap.keys(
@@ -164,7 +162,7 @@ describe('PojoMap', () => {
     ]);
   });
 
-  it("should return the correct size of a PojoMap", () => {
+  it('should return the correct size of a PojoMap', () => {
     const map = PojoMap.fromEntries<string, number>([
       ['a', 0],
       ['b', 1],
