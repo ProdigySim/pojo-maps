@@ -26,7 +26,6 @@ function fromEntries<T extends PropertyKey, U extends {}>(
  */
 function has<T extends PropertyKey, U extends {}>(map: PojoMap<T,U>, key: T): boolean {
   return typeof map[key] !== 'undefined'
-  //return !!map[key];
 }
 
 /**
