@@ -71,8 +71,6 @@ describe('PojoMap', () => {
     expect(PojoMap.get(map, 'a')).toBe(1);
     expect(PojoMap.get(map, 'b')).toBe(0);
     expect(PojoMap.get(map, 'c')).toBe(-1);
-    // $ExpectError
-    //expect(PojoMap.get(map, 'd')).toBeUndefined();
 
     const res = PojoMap.get(map, 'a');
     leibnizTest<typeof res, number | undefined>(identity);
@@ -139,13 +137,6 @@ describe('PojoMap', () => {
     expect(Object.is(newMap, map)).toBe(false);
     expect(PojoMap.has(newMap, 'c')).toBe(false);
   });
-
-  // TODO: $ExpectError?
-  // it('should not allow undefined to be set as a value', () => {
-  //   const map: PojoMap<string, string> = PojoMap.empty();
-  //   PojoMap.values(map); // type: Array<string>
-  //   //PojoMap.set(map, 'myvalue', undefined);
-  // })
 
   it('should return the keys for a PojoMap', () => {
     expect(
