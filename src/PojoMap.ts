@@ -49,7 +49,11 @@ function has<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>, key: T): b
  * @param value The entry's value
  * @returns A new PojoMap contianing the original PojoMap and the new entry.
  */
-function set<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>, key: T, value: U): PojoMap<T, U> {
+function set<T extends PropertyKey, T2 extends PropertyKey, U extends {}, U2 extends {}>(
+  map: PojoMap<T, U>,
+  key: T2,
+  value: U2,
+): PojoMap<T | T2, U | U2> {
   return {
     ...map,
     [key]: value,
