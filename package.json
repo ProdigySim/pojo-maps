@@ -23,7 +23,7 @@
     "type-lint": "yarn run build && cp lib/*.d.ts type-tests/ && yarn run dtslint --localTs node_modules/typescript/lib --expectOnly type-tests",
     "test": "jest --config jestconfig.json",
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"type-tests/test.ts\"",
     "lint": "eslint . --ext .ts",
     "preversion": "yarn run lint",
     "prepare": "yarn run build",

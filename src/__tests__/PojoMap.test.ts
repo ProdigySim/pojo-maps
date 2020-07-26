@@ -100,15 +100,30 @@ describe('PojoMap', () => {
   });
 
   it('should overwrite an existing value with the same key', () => {
-    const map = PojoMap.fromEntries<string, number>([
+    const ab = PojoMap.fromEntries<string, number>([
       ['a', 0],
       ['b', 1],
     ]);
-    const smallerMap = PojoMap.set(map, 'b', 5);
-    expect(smallerMap).toStrictEqual({
+    const abc = PojoMap.set(ab, 'b', 5);
+    expect(abc).toStrictEqual({
       a: 0,
       b: 5,
     });
+  });
+
+  it('should add additional types to a map', () => {
+    const ab = PojoMap.fromEntries([
+      ['a', 0],
+      ['b', 1],
+    ]);
+    const abc = PojoMap.set(ab, 'c', 5);
+    expect(abc).toStrictEqual({
+      a: 0,
+      b: 1,
+      c: 5,
+    });
+
+    leibnizTest<typeof abc, PojoMap<'a' | 'b', number>>(identity);
   });
 
   it('should remove from a PojoMap immutably', () => {
