@@ -132,18 +132,13 @@ function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
  * @param transform The function by which to transform the PojoMap's values
  * @returns a new PojoMap, its values transformed as defined by the transform function
  */
-function map<T extends PropertyKey, U extends {}, V extends {}>(map: PojoMap<T, U>, transform: (item: U, key: T) => V): PojoMap<T, V> {
-  let returnMap = empty<T,V>();
-  const pojoMapArray = entries(map);
-
-  for (let i = 0; i < size(map); i++) {
-    returnMap = {
-    ...returnMap,
-    [pojoMapArray[i][0]]: transform(pojoMapArray[i][1], pojoMapArray[i][0]),
-    }
-  }
-    
-  return returnMap;
+function map<T extends PropertyKey, U extends {}, V extends {}>(
+  map: PojoMap<T, U>,
+  transform: (item: U, key: T) => V,
+): PojoMap<T, V> {
+  const originalEntries = entries(map);
+  const newEntries = originalEntries.map(([key, value]) => [key, transform(value, key)] as const);
+  return fromEntries(newEntries);
 }
 
 export const PojoMap = {
