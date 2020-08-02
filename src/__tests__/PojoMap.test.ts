@@ -200,4 +200,19 @@ describe('PojoMap', () => {
     ]);
     expect(PojoMap.size(map)).toStrictEqual(2);
   });
+
+  it('should map to a new PojoMap via a transform function', () => {
+    const map = PojoMap.fromEntries<string, number>([
+      ['a', 1],
+      ['b', 2],
+    ]);
+    expect(PojoMap.map(map, (item) => item * 2)).toStrictEqual({
+      a: 2,
+      b: 4,
+    });
+    expect(PojoMap.map(map, (item, key) => item+key)).toStrictEqual({
+      a: '1a',
+      b: '2b',
+    });
+  });
 });

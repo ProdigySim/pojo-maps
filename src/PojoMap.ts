@@ -133,10 +133,10 @@ function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
  * @returns a new PojoMap, its values transformed as defined by the transform function
  */
 function map<T extends PropertyKey, U extends {}, V extends {}>(map: PojoMap<T, U>, transform: (item: U, key: T) => V): PojoMap<T, V> {
-  let returnMap = PojoMap.empty<T,V>();
-  let pojoMapArray = PojoMap.entries(map);
+  let returnMap = empty<T,V>();
+  const pojoMapArray = entries(map);
 
-  for (let i = 0; i < PojoMap.size(map); i++) {
+  for (let i = 0; i < size(map); i++) {
     returnMap = {
     ...returnMap,
     [pojoMapArray[i][0]]: transform(pojoMapArray[i][1], pojoMapArray[i][0]),
