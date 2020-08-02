@@ -47,7 +47,7 @@ function has<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>, key: T): b
  * @param map An existing PojoMap
  * @param key The entry's key
  * @param value The entry's value
- * @returns A new PojoMap contianing the original PojoMap and the new entry.
+ * @returns A new PojoMap containing the original PojoMap and the new entry.
  */
 function set<T extends PropertyKey, T2 extends PropertyKey, U extends {}, U2 extends {}>(
   map: PojoMap<T, U>,
@@ -125,6 +125,27 @@ function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
   return keys(map).length;
 }
 
+/**
+ * Create a new PojoMap based on a supplied transformation function
+ *
+ * @param map A PojoMap
+ * @param transform The function by which to transform the PojoMap's values
+ * @returns a new PojoMap, its values transformed as defined by the transform function
+ */
+function map<T extends PropertyKey, U extends {}, V extends {}>(map: PojoMap<T, U>, transform: (item: U, key: T) => V): PojoMap<T, V> {
+  let returnMap = PojoMap.empty<T,V>();
+  let pojoMapArray = PojoMap.entries(map);
+
+  for (let i = 0; i < PojoMap.size(map); i++) {
+    returnMap = {
+    ...returnMap,
+    [pojoMapArray[i][0]]: transform(pojoMapArray[i][1], pojoMapArray[i][0]),
+    }
+  }
+    
+  return returnMap;
+}
+
 export const PojoMap = {
   fromEntries,
   get,
@@ -136,4 +157,5 @@ export const PojoMap = {
   values,
   entries,
   size,
+  map,
 };
