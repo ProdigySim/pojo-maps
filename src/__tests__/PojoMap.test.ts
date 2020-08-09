@@ -215,4 +215,51 @@ describe('PojoMap', () => {
       b: '2b',
     });
   });
+
+  describe('.union()', () => {
+    it('should create a new map from 2 existing maps', () => {
+      const ab = PojoMap.fromEntries([
+        ['a', 1],
+        ['b', 2],
+      ]);
+      const cd = PojoMap.fromEntries([
+        ['c', 3],
+        ['d', 4],
+      ]);
+
+      expect(PojoMap.union(ab, cd)).toStrictEqual({
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 4,
+      });
+    });
+
+    it('should overwrite keys using the 2nd map', () => {
+      const ab = PojoMap.fromEntries([
+        ['a', 1],
+        ['b', 2],
+      ]);
+      const cd = PojoMap.fromEntries([
+        ['b', 3],
+        ['c', 4],
+      ]);
+
+      expect(PojoMap.union(ab, cd)).toStrictEqual({
+        a: 1,
+        b: 3,
+        c: 4,
+      });
+
+      const ab2 = PojoMap.fromEntries([
+        ['a', 'a'],
+        ['b', 'b'],
+      ]);
+
+      expect(PojoMap.union(ab, ab2)).toStrictEqual({
+        a: 'a',
+        b: 'b',
+      });
+    });
+  });
 });
