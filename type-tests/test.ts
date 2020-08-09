@@ -2,6 +2,16 @@
 
 import { PojoMap } from '.';
 
+function shouldNotAllowUndefinedNullValues() {
+  // $ExpectError
+  type UndefMap = PojoMap<string, number | undefined>;
+  // $ExpectError
+  type NullMap = PojoMap<string, number | null>;
+
+  type ABCN = 'a' | 'b' | 'c' | null;
+  // $ExpectError
+  type NullMap2 = PojoMap<string, ABCN>;
+}
 function shouldGetOptionally() {
   const abc = PojoMap.empty<'a' | 'b' | 'c', number>();
   PojoMap.get(abc, 'a'); // $ExpectType number | undefined
