@@ -2,6 +2,10 @@
 
 import { PojoMap } from '.';
 
+type Opaque<T, U> = T & { __brand: U };
+type UserId = Opaque<string, 'userid'>;
+type ClientId = Opaque<string, 'clientid'>;
+
 function shouldNotAllowUndefinedNullValues() {
   // $ExpectError
   type UndefMap = PojoMap<string, number | undefined>;
@@ -12,6 +16,7 @@ function shouldNotAllowUndefinedNullValues() {
   // $ExpectError
   type NullMap2 = PojoMap<string, ABCN>;
 }
+
 function shouldGetOptionally() {
   const abc = PojoMap.empty<'a' | 'b' | 'c', number>();
   PojoMap.get(abc, 'a'); // $ExpectType number | undefined
@@ -61,15 +66,19 @@ function shouldCombineTypesWithAdd() {
 }
 
 function shouldGiveGoodTagTypeTypes() {
-  type Opaque<T, U> = T & { __brand: U };
-  type UserId = Opaque<string, 'userid'>;
-  type User = {
+  interface User {
     id: UserId;
     name: string;
-  };
+  }
   const usersById = PojoMap.empty<UserId, User>();
   const userId = '1234' as UserId;
   PojoMap.get(usersById, userId); // $ExpectType User | undefined
+
+  const clientId = '5432' as ClientId;
+  // $ExpectError
+  PojoMap.get(usersById, clientId);
+  // $ExpectError
+  PojoMap.get(usersById, '1234');
 
   PojoMap.keys(usersById); // $ExpectType Opaque<string, "userid">[]
 
@@ -84,6 +93,62 @@ function shouldGiveGoodTagTypeTypes() {
     },
   ];
   PojoMap.fromEntries(users.map(u => [u.id, u])); // $ExpectType PojoMap<Opaque<string, "userid">, User>
+}
+
+function shouldExtractPickTypes() {
+  const ab = PojoMap.empty<'a' | 'b', number>();
+
+  PojoMap.pick(ab, ['a']); // $ExpectType PojoMap<"a", number>
+  PojoMap.pick(ab, ['a', 'b']); // $ExpectType PojoMap<"a" | "b", number>
+  // $ExpectError
+  PojoMap.pick(ab, ['a', 'b', 'c']);
+
+  const str = PojoMap.empty<string, number>();
+  PojoMap.pick(str, ['a', 'b', 'c']); // $ExpectType PojoMap<"a" | "b" | "c", number>
+
+  const strnum = PojoMap.empty<string | number, number>();
+  PojoMap.pick(strnum, [1, 2, 3]); // $ExpectType PojoMap<1 | 2 | 3, number>
+  PojoMap.pick(strnum, [1, 2, 3] as number[]); // $ExpectType PojoMap<number, number>
+}
+
+function shouldSelectPickedKeys() {
+  const ab = PojoMap.empty<'a' | 'b', number>();
+
+  PojoMap.pick(ab, ['a']); // $ExpectType PojoMap<"a", number>
+  PojoMap.pick(ab, ['a', 'b']); // $ExpectType PojoMap<"a" | "b", number>
+  // $ExpectError
+  PojoMap.pick(ab, ['a', 'b', 'c']);
+
+  const str = PojoMap.empty<string, number>();
+  PojoMap.pick(str, ['a', 'b', 'c']); // $ExpectType PojoMap<"a" | "b" | "c", number>
+
+  const strnum = PojoMap.empty<string | number, number>();
+  PojoMap.pick(strnum, [1, 2, 3]); // $ExpectType PojoMap<1 | 2 | 3, number>
+  PojoMap.pick(strnum, [1, 2, 3] as number[]); // $ExpectType PojoMap<number, number>
+
+  const tinytype = PojoMap.empty<UserId, string>();
+
+  PojoMap.pick(tinytype, ['asdf', 'dsa', 'fsda'] as UserId[]); // $ExpectType PojoMap<Opaque<string, "userid">, string>
+}
+
+function shouldExtractOmitTypes() {
+  const ab = PojoMap.empty<'a' | 'b', number>();
+
+  PojoMap.omit(ab, ['a']); // $ExpectType PojoMap<"b", number>
+  PojoMap.omit(ab, ['a', 'b']); // $ExpectType PojoMap<never, number>
+  // $ExpectError
+  PojoMap.omit(ab, ['a', 'b', 'c']);
+
+  const str = PojoMap.empty<string, number>();
+  PojoMap.omit(str, ['a', 'b', 'c']); // $ExpectType PojoMap<string, number>
+
+  const strnum = PojoMap.empty<string | number, number>();
+  PojoMap.omit(strnum, [1, 2, 3]); // $ExpectType PojoMap<string | number, number>
+  PojoMap.omit(strnum, [1, 2, 3] as number[]); // $ExpectType PojoMap<string | number, number>
+
+  const tinytype = PojoMap.empty<UserId, string>();
+
+  PojoMap.omit(tinytype, ['asdf', 'dsa', 'fsda'] as UserId[]); // $ExpectType PojoMap<Opaque<string, "userid">, string>
 }
 
 function shouldUnionizeMaps() {

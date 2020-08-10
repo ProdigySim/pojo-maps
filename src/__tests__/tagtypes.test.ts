@@ -52,4 +52,26 @@ describe('PojoMap', () => {
     leibnizTest<typeof keys, UserId[]>(identity);
     expect(keys).toEqual(['1', '2']);
   });
+
+  it('should pick and omit tag types reasonably', () => {
+    const users: User[] = [
+      {
+        id: '1' as UserId,
+        name: 'alice',
+      },
+      {
+        id: '2' as UserId,
+        name: 'bob',
+      },
+    ];
+    const usersById = PojoMap.fromEntries(users.map(u => [u.id, u]));
+
+    const justOne = PojoMap.pick(usersById, ['1' as UserId]);
+    leibnizTest<typeof justOne, PojoMap<UserId, User>>(identity);
+    expect(justOne).toStrictEqual({ 1: { id: '1', name: 'alice' } });
+
+    const justTwo = PojoMap.omit(usersById, ['1' as UserId]);
+    leibnizTest<typeof justTwo, PojoMap<UserId, User>>(identity);
+    expect(justTwo).toStrictEqual({ 2: { id: '2', name: 'bob' } });
+  });
 });

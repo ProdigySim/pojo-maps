@@ -126,6 +126,72 @@ function size<T extends PropertyKey, U extends {}>(map: PojoMap<T, U>): number {
 }
 
 /**
+ * Pick a subset of a PojoMap given a list of keys.
+ *
+ * @param map A PojoMap
+ * @param keys The keys to pick from the PojoMap
+ * @returns A copy of the input PojoMap containing only the keys specified
+ */
+function pick<T extends PropertyKey, T2 extends T, U extends {}>(
+  map: PojoMap<T, U>,
+  keys: readonly T2[],
+): PojoMap<T2, U> {
+  const keyset = new Set<T>(keys);
+  return fromEntries(entries(map).filter(([key]) => keyset.has(key)));
+}
+
+// For "omit" we need to filter the keys of the PojoMap, i.e. `T`
+// If T is 'a' | 'b', and we omit 'b', we want to transform T to just 'a'
+// However, if T is string, and we want to omit some strings, we need to leave T as is.
+// Furthermore, this solution needs to be compatible with Tag Types.
+
+/**
+ * Given a tag type, get the primitive type this tag type indicates.
+ */
+type GetTagPrimitive<T extends object> = T extends string
+  ? string
+  : T extends number
+  ? number
+  : T extends symbol
+  ? symbol
+  : T extends boolean
+  ? boolean
+  : never;
+/**
+ * Given a primitive type T, if it is a literal type, return T, otherwise never.
+ */
+type ExcludeFullPrimitives<T extends PropertyKey> = string extends T
+  ? never
+  : number extends T
+  ? never
+  : symbol extends T
+  ? never
+  : T;
+/**
+ * Filter down type T to only primitive literal types.
+ * e.g. 'a' | 'b' => 'a' | 'b'
+ * e.g. string    => never
+ * e.g. UserId    => never
+ * e.g. StrEnum   => StrEnum
+ */
+type OnlyClosedPrimitives<T extends PropertyKey> = T extends object ? GetTagPrimitive<T> : ExcludeFullPrimitives<T>;
+
+/**
+ * Pick a subset of a PojoMap by excluding a list of keys.
+ *
+ * @param map A PojoMap
+ * @param keys The keys to exclude from the PojoMap
+ * @returns A copy of the input map with the given keys omitted
+ */
+function omit<T extends PropertyKey, T2 extends T, U extends {}>(
+  map: PojoMap<T, U>,
+  keys: readonly T2[],
+): PojoMap<Exclude<T, OnlyClosedPrimitives<T2>>, U> {
+  const keyset = new Set<T>(keys);
+  return fromEntries(entries(map).filter(([key]) => !keyset.has(key)));
+}
+
+/**
  * Create a new PojoMap based on a supplied transformation function
  *
  * @param map A PojoMap
@@ -167,6 +233,8 @@ export const PojoMap = {
   values,
   entries,
   size,
+  pick,
+  omit,
   map,
   union,
 };
