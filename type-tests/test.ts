@@ -2,6 +2,16 @@
 
 import { PojoMap } from '.';
 
+function shouldNotAllowUndefinedNullValues() {
+  // $ExpectError
+  type UndefMap = PojoMap<string, number | undefined>;
+  // $ExpectError
+  type NullMap = PojoMap<string, number | null>;
+
+  type ABCN = 'a' | 'b' | 'c' | null;
+  // $ExpectError
+  type NullMap2 = PojoMap<string, ABCN>;
+}
 function shouldGetOptionally() {
   const abc = PojoMap.empty<'a' | 'b' | 'c', number>();
   PojoMap.get(abc, 'a'); // $ExpectType number | undefined
@@ -74,4 +84,23 @@ function shouldGiveGoodTagTypeTypes() {
     },
   ];
   PojoMap.fromEntries(users.map(u => [u.id, u])); // $ExpectType PojoMap<Opaque<string, "userid">, User>
+}
+
+function shouldUnionizeMaps() {
+  const ab = PojoMap.empty<'a' | 'b', 1 | 2>();
+  const cb = PojoMap.empty<'c' | 'd', 3 | 4>();
+
+  PojoMap.union(ab, cb); // $ExpectType PojoMap<"a" | "b" | "c" | "d", 2 | 1 | 3 | 4>
+  PojoMap.union(cb, ab); // $ExpectType PojoMap<"a" | "b" | "c" | "d", 2 | 1 | 3 | 4>
+
+  const ab2 = PojoMap.empty<'a' | 'b', 3 | 4>();
+
+  PojoMap.union(ab, ab2); // $ExpectType PojoMap<"a" | "b", 2 | 1 | 3 | 4>
+  PojoMap.union(ab2, ab); // $ExpectType PojoMap<"a" | "b", 2 | 1 | 3 | 4>
+
+  const sn = PojoMap.empty<string, number>();
+  const ns = PojoMap.empty<number, string>();
+
+  PojoMap.union(sn, ns); // $ExpectType PojoMap<string | number, string | number>
+  PojoMap.union(ns, sn); // $ExpectType PojoMap<string | number, string | number>
 }

@@ -141,6 +141,21 @@ function map<T extends PropertyKey, U extends {}, V extends {}>(
   return fromEntries(newEntries);
 }
 
+/**
+ * Create a new PojoMap by combining two existing PojoMaps.
+ * If there are duplicate keys, the value from the second map will be used.
+ *
+ * @param baseMap The base map to copy.
+ * @param additionalMap An additional map to copy entries from. This map's values will have precedence in the result.
+ * @returns A new map containing keys & values from both input maps.
+ */
+function union<T extends PropertyKey, T2 extends PropertyKey, U extends {}, U2 extends {}>(
+  baseMap: PojoMap<T, U>,
+  additionalMap: PojoMap<T2, U2>,
+): PojoMap<T | T2, U | U2> {
+  return fromEntries<T | T2, U | U2>([...entries(baseMap), ...entries(additionalMap)]);
+}
+
 export const PojoMap = {
   fromEntries,
   get,
@@ -153,4 +168,5 @@ export const PojoMap = {
   entries,
   size,
   map,
+  union,
 };
