@@ -20,6 +20,60 @@ function fromEntries<T extends PropertyKey, U extends {}>(entries: Readonly<Arra
 }
 
 /**
+ * Create a PojoMap from a list of items, indexed by a key selector
+ * When there are repeat keys, the last item with the given key will be stored.
+ * @param items List of items to index
+ * @param keySelector A function that will return the index key for an item.
+ * @returns A new PojoMap contiaining the indexed items
+ */
+function fromIndexing<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, U> {
+  const acc: Partial<Record<T, U>> = {};
+  let i = 0;
+  for (const item of items) {
+    const key = keySelector(item, i++);
+    acc[key] = item;
+  }
+  return acc;
+}
+
+/**
+ * Create a PojoMap from a list of items, grouped by a key selector
+ * @param items List of items to group
+ * @param keySelector A function that will return the index key for an item.
+ * @returns A new PojoMap contiaining the grouped items
+ */
+function fromGrouping<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, U[]> {
+  const acc: Partial<Record<T, U[]>> = {};
+  let i = 0;
+  for (const item of items) {
+    const key = keySelector(item, i++);
+    let arr = acc[key];
+    if (!arr) {
+      acc[key] = arr = [];
+    }
+    arr.push(item);
+  }
+  return acc;
+}
+
+/**
+ * Create a PojoMap from a list of items counts, grouped by a key selector
+ * @param items List of items to group
+ * @param keySelector A function that will return the index key for an item.
+ * @returns A new PojoMap contiaining the counts of items by group
+ */
+function fromCounting<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, number> {
+  const acc: Partial<Record<T, number>> = {};
+  let i = 0;
+  for (const item of items) {
+    const key = keySelector(item, i++);
+    const count = acc[key] ?? 0;
+    acc[key] = count + 1;
+  }
+  return acc;
+}
+
+/**
  * Get the value stored at a given key in a PojoMap.
  *
  * @param map A PojoMap
@@ -143,6 +197,9 @@ function map<T extends PropertyKey, U extends {}, V extends {}>(
 
 export const PojoMap = {
   fromEntries,
+  fromIndexing,
+  fromGrouping,
+  fromCounting,
   get,
   has,
   set,
