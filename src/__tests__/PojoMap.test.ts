@@ -216,6 +216,47 @@ describe('PojoMap', () => {
     });
   });
 
+  describe('.pick()', () => {
+    it('should only return selected keys', () => {
+      const map = PojoMap.fromEntries<string, number>([
+        ['a', 1],
+        ['b', 2],
+      ]);
+
+      expect(PojoMap.pick(map, ['a'])).toStrictEqual({
+        a: 1,
+      });
+      expect(PojoMap.pick(map, ['b'])).toStrictEqual({
+        b: 2,
+      });
+      expect(PojoMap.pick(map, ['a', 'b'])).toStrictEqual({
+        a: 1,
+        b: 2,
+      });
+    });
+  });
+
+  describe('.omit()', () => {
+    it('should filter out given keys', () => {
+      const map = PojoMap.fromEntries<string, number>([
+        ['a', 1],
+        ['b', 2],
+      ]);
+
+      expect(PojoMap.omit(map, ['a'])).toStrictEqual({
+        b: 2,
+      });
+      expect(PojoMap.omit(map, ['b'])).toStrictEqual({
+        a: 1,
+      });
+      expect(PojoMap.omit(map, ['a', 'b'])).toStrictEqual({});
+      expect(PojoMap.omit(map, [])).toStrictEqual({
+        a: 1,
+        b: 2,
+      });
+    });
+  });
+
   describe('.union()', () => {
     it('should create a new map from 2 existing maps', () => {
       const ab = PojoMap.fromEntries([
