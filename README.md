@@ -74,11 +74,11 @@ const set = PojoSet.from(PojoMap.keys(alphaNum));
 This project is almost trivial in terms of its JavaScript functionality. The true mission of this project is to improve handling around Record objects in TypeScript. In particular, these two scenarios:
 
 1. https://github.com/microsoft/TypeScript/pull/30796: TypeScript does not distinguish missing/undefined properties.
-  * We want to provide consistent, practical types for `get()` and `values()` operations.
-  * Standard `Record` or `Partial<Record>` in TS inconsistently give `T | undefined` vs `T` between `rec[key]` and `Object.values(rec)`;
-  * Our utility methods for PojoMap provide constraints & type assertions to give more useful types here.
+   * We want to provide consistent, practical types for `get()` and `values()` operations.
+   * Standard `Record` or `Partial<Record>` in TS inconsistently give `T | undefined` vs `T` between `rec[key]` and `Object.values(rec)`;
+   * Our utility methods for PojoMap provide constraints & type assertions to give more useful types here.
 2. https://github.com/microsoft/TypeScript/pull/26797 Tag Types are not allowed as index signature parameter types.
-  * DIY Tag Types, aka nominal types or opaque types, are not supported first party in TypeScript.
-  * [Unlike opaque types in flow](https://github.com/Microsoft/TypeScript/issues/4895#issuecomment-425132582), our DIY tag types cannot be used as index parameters.
-  * Our utility methods for PojoMap provide type assertions to allow "indexing" a PojoMap using a tag type.
+   * DIY Tag Types, aka nominal types or opaque types, are not supported first party in TypeScript.
+   * [Unlike opaque types in flow](https://github.com/Microsoft/TypeScript/issues/4895#issuecomment-425132582), our DIY tag types cannot be used as index parameters.
+   * Our utility methods for PojoMap provide type assertions to allow "indexing" a PojoMap using a tag type.
   
