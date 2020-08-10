@@ -38,6 +38,83 @@ describe('PojoMap', () => {
     leibnizTest<typeof map, PojoMap<'a' | 'b' | 'c', 1 | 2 | 3>>(identity);
   });
 
+  it('should make a Map by indexing a list of items', () => {
+    const map = PojoMap.fromIndexing(
+      [
+        {
+          name: 'alice',
+          age: 24,
+        },
+        {
+          name: 'bob',
+          age: 23,
+        },
+        {
+          name: 'alice',
+          age: 25,
+        },
+      ],
+      (person) => person.name,
+    );
+    expect(map).toStrictEqual({
+      'alice': { name: 'alice', age: 25 },
+      'bob': { name: 'bob', age: 23 },
+    });
+    expect(PojoMap.fromIndexing([], () => 'unused')).toStrictEqual({});
+  });
+
+  it('should make a Map by grouping a list of items', () => {
+    const map = PojoMap.fromGrouping(
+      [
+        {
+          name: 'alice',
+          age: 24,
+        },
+        {
+          name: 'bob',
+          age: 23,
+        },
+        {
+          name: 'alice',
+          age: 25,
+        },
+      ],
+      (person) => person.name,
+    );
+    expect(map).toStrictEqual({
+      'alice': [{ name: 'alice', age: 24 }, { name: 'alice', age: 25 }],
+      'bob': [{ name: 'bob', age: 23 }],
+    });
+
+    expect(PojoMap.fromGrouping([], () => 'unused')).toStrictEqual({});
+  });
+
+  it('should make a Map by counting a list of items', () => {
+    const map = PojoMap.fromCounting(
+      [
+        {
+          name: 'alice',
+          age: 24,
+        },
+        {
+          name: 'bob',
+          age: 23,
+        },
+        {
+          name: 'alice',
+          age: 25,
+        },
+      ],
+      (person) => person.name,
+    );
+    expect(map).toStrictEqual({
+      'alice': 2,
+      'bob': 1,
+    });
+
+    expect(PojoMap.fromCounting([], () => 'unused')).toStrictEqual({});
+  });
+
   it('should check whether it is defined at a key', () => {
     const map = PojoMap.fromEntries<string | number | symbol, number | boolean | string>([
       ['a', 5],
