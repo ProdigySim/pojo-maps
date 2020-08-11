@@ -26,7 +26,10 @@ function fromEntries<T extends PropertyKey, U extends {}>(entries: Readonly<Arra
  * @param keySelector A function that will return the index key for an item.
  * @returns A new PojoMap contiaining the indexed items
  */
-function fromIndexing<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, U> {
+function fromIndexing<T extends PropertyKey, U extends {}>(
+  items: readonly U[],
+  keySelector: (item: U, index: number) => T,
+): PojoMap<T, U> {
   const acc: Partial<Record<T, U>> = {};
   let i = 0;
   for (const item of items) {
@@ -42,7 +45,10 @@ function fromIndexing<T extends PropertyKey, U extends {}>(items: readonly U[], 
  * @param keySelector A function that will return the index key for an item.
  * @returns A new PojoMap contiaining the grouped items
  */
-function fromGrouping<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, U[]> {
+function fromGrouping<T extends PropertyKey, U extends {}>(
+  items: readonly U[],
+  keySelector: (item: U, index: number) => T,
+): PojoMap<T, U[]> {
   const acc: Partial<Record<T, U[]>> = {};
   let i = 0;
   for (const item of items) {
@@ -62,7 +68,10 @@ function fromGrouping<T extends PropertyKey, U extends {}>(items: readonly U[], 
  * @param keySelector A function that will return the index key for an item.
  * @returns A new PojoMap contiaining the counts of items by group
  */
-function fromCounting<T extends PropertyKey, U extends {}>(items: readonly U[], keySelector: (item: U, index: number) => T): PojoMap<T, number> {
+function fromCounting<T extends PropertyKey, U extends {}>(
+  items: readonly U[],
+  keySelector: (item: U, index: number) => T,
+): PojoMap<T, number> {
   const acc: Partial<Record<T, number>> = {};
   let i = 0;
   for (const item of items) {

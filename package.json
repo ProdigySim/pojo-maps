@@ -1,6 +1,6 @@
 {
   "name": "pojo-maps",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Plain old Javascript Map implementation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

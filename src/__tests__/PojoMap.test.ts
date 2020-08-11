@@ -54,11 +54,11 @@ describe('PojoMap', () => {
           age: 25,
         },
       ],
-      (person) => person.name,
+      person => person.name,
     );
     expect(map).toStrictEqual({
-      'alice': { name: 'alice', age: 25 },
-      'bob': { name: 'bob', age: 23 },
+      alice: { name: 'alice', age: 25 },
+      bob: { name: 'bob', age: 23 },
     });
     expect(PojoMap.fromIndexing([], () => 'unused')).toStrictEqual({});
   });
@@ -79,11 +79,14 @@ describe('PojoMap', () => {
           age: 25,
         },
       ],
-      (person) => person.name,
+      person => person.name,
     );
     expect(map).toStrictEqual({
-      'alice': [{ name: 'alice', age: 24 }, { name: 'alice', age: 25 }],
-      'bob': [{ name: 'bob', age: 23 }],
+      alice: [
+        { name: 'alice', age: 24 },
+        { name: 'alice', age: 25 },
+      ],
+      bob: [{ name: 'bob', age: 23 }],
     });
 
     expect(PojoMap.fromGrouping([], () => 'unused')).toStrictEqual({});
@@ -105,11 +108,11 @@ describe('PojoMap', () => {
           age: 25,
         },
       ],
-      (person) => person.name,
+      person => person.name,
     );
     expect(map).toStrictEqual({
-      'alice': 2,
-      'bob': 1,
+      alice: 2,
+      bob: 1,
     });
 
     expect(PojoMap.fromCounting([], () => 'unused')).toStrictEqual({});
