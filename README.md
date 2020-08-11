@@ -60,14 +60,29 @@ PojoMap.keys(abd); // ['a', 'b', 'd']
 PojoMap.values(abcd); // [1, 2, 3, 4]
 PojoMap.entries(alphaNum); // [['a', 1], ['b', 2], ['c', 3]]
 
+
+// Pick or Omit Keys
+const ab = PojoMap.pick(abcd, ['a', 'b']);
+const cd = PojoMap.omit(abcd, ['a', 'b']);
+
 // Add additional types to your map?
 const empty = PojoMap.empty<string, string>();
-const withNums = PojoMap.set('a', 10);
-
+const withNums = PojoMap.set(empty, 'a', 10);
 
 // Convert a PojoMap into a PojoSet
 const set = PojoSet.from(PojoMap.keys(alphaNum));
+
+// Create a PojoMap through common high level reducer operations:
+const pets = [{ name: 'Tacquito', kind: 'dog' }, { name: 'Olaf', kind: 'dog' }, { name: 'Clover', kind: 'cat' }];
+const petsByName = PojoMap.fromIndexing(pets, pet => pet.name);
+const petsByType = PojoMap.fromGrouping(pets, pet => pet.kind);
+const petTypeCounts = PojoMap.fromCounting(pets, pet => pet.kind);
+
+// Map a PojoMap's values
+const petTypesByName = PojoMap.map(petsByName, pet => pet.kind);
 ```
+
+[TS Playground Demo](https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAbzgBQgKwgWQIZjgXzgDMoIQ4BySDAWhFwGcKBuAKFElkRXQgGUApvEIkylahBoMhTNqwDGEAHYN42ADZgAFtgByAV3IBeHhhxgAdKJABRJTCjABDABQBtNxWwUANHACMALp+ngBGvnAATMFwnvIRAMyBgXDYDHCKKjAAlHKZqqmh8gAmcCaoZrgW0jAuGtp6hn4UxREALLkKygXYoaXlvOYWUAIgEABuAnVFxc3xnawVWFUA1gIAnq69xblwAPR7sV4RFOHNrYGLg1XjGvrO0yW7B7H+fpF+CX5tl0tDAvZHA96joDCBnocPMc-EEQqcItE4fFPslWGiXshgPIVnBoHAAPIgYDwADSGwYXSyhTKpmWljAWJWj1mR28zXCgU6+XgJRpfyqZGJzLhbMoHIWLwAgsVStgZcTgMoNHAYOswM4VRA4OsIPooHB6GAAPyUgqjMCqvnXSzm1UAHlUjiUAHM-I7gC6AHwuLndeAAd2JWjB6QGlUsNRctvWzVF-gADBLDgBhZSTLjYWnmOAemBazNLQQwU3wGpWjBFqykEAufmWNabOqaUGGbJJuDJkbYGACVJZ3AqrSkfTOrQZMhjJRwLTAUdwdQCSbqOAjYr6eQCfUQdVQbuKlQALhLcHVMFDsSQSmwIAEB8oABVsPIAI76YkQCIrD3FO8tCDOigCD8S9r1vSh8XUbAiE-b9f2Kf9APwYC4CvG9f2TdQJk3GClB-Sh5G7RDAjYbkTxkAAhdZdFA8s6SrMgAElcIEAAPD1nRcU8GD8U8yk9MiYAsVCBF9KkuMo+81V7MM6OsABxYcGRdTiZB4oQ+IEiwv1w0SClPST1VTfR7HPOt6JAIz7HYlSzzU+AjH408tO-dtswLa0KHSW51HuClSP0qSGEo6ib1ooZDRsoKqNAuyNKc7SdmYIA)
 
 ### Project Goals
 
